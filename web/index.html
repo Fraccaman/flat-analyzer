@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticino Flat Deals</title>
+  <meta name="description" content="Rental flats in Ticino scored by value, municipal tax and time on market.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b7a55'/%3E%3Cpath d='M8 16 16 9l8 7v8h-5v-5h-6v5H8z' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    try { const t = localStorage.getItem("flatprice.theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" fill="currentColor"/></svg>
+      </span>
+      <div>
+        <h1>Ticino Flat Deals</h1>
+        <p class="meta" id="meta">Loading…</p>
+      </div>
+    </div>
+    <dl class="stats" id="stats" aria-live="polite">
+      <div class="stat"><dt>Listings shown</dt><dd id="st-count">–</dd></div>
+      <div class="stat stat-great"><dt>Great deals</dt><dd id="st-great">–</dd></div>
+      <div class="stat"><dt>Best saving</dt><dd id="st-best">–</dd></div>
+      <div class="stat"><dt>Median CHF/m²</dt><dd id="st-m2">–</dd></div>
+    </dl>
+    <button type="button" class="icon-btn theme-btn" id="theme" aria-label="Colour theme: auto" title="Colour theme: auto">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3z" fill="currentColor"/><circle cx="12" cy="12" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+  </header>
+
+  <main class="layout">
+    <section class="map-pane" aria-label="Map">
+      <div id="map"></div>
+      <div class="legend" id="legend" aria-label="Map legend"></div>
+    </section>
+
+    <section class="list-pane" aria-label="Listings">
+      <section class="top-deals" id="top-deals" aria-labelledby="top-deals-h" hidden>
+        <div class="section-h">
+          <h2 id="top-deals-h">Top deals</h2>
+          <span class="hint">best score · your tax profile · click to show on map</span>
+        </div>
+        <div class="cards" id="cards" role="list"></div>
+      </section>
+
+      <div class="controls">
+      <form id="filters" class="filters" autocomplete="off">
+        <div class="toolbar">
+          <label class="search">
+            <span class="sr-only">Search</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" name="q" placeholder="Search title or street">
+          </label>
+          <label class="inline">Deal
+            <select name="verdict_min" aria-label="Minimum deal verdict">
+              <option value="">any price</option>
+              <option value="great">Great only</option>
+              <option value="good">Good or better</option>
+              <option value="fair">Fair or better</option>
+              <option value="pricey">Hide overpriced</option>
+            </select>
+          </label>
+          <label class="inline">Sort
+            <select id="sort-select" aria-label="Sort listings by"></select>
+          </label>
+        </div>
+
+        <details class="panel">
+          <summary>More filters</summary>
+          <div class="grid">
+            <label>Rent min <input type="number" name="rent_min" min="0" step="50" inputmode="numeric"></label>
+            <label>Rent max <input type="number" name="rent_max" min="0" step="50" inputmode="numeric"></label>
+            <label>Rooms ≥ <input type="number" name="rooms_min" min="0" step="0.5" inputmode="decimal"></label>
+            <label>m² ≥ <input type="number" name="m2_min" min="0" step="5" inputmode="numeric"></label>
+            <label>Furnished
+              <select name="furnished">
+                <option value="any">any</option>
+                <option value="yes">yes</option>
+                <option value="no">no</option>
+              </select>
+            </label>
+            <label class="check"><input type="checkbox" name="hide_suspicious" checked> Hide suspicious</label>
+            <label class="check"><input type="checkbox" name="in_view"> Only in map view</label>
+            <label class="check"><input type="checkbox" name="show_munis" checked> Municipality layer</label>
+            <fieldset class="munis" id="portal-filter" hidden>
+              <legend>Portals</legend>
+              <div id="portal-list" class="muni-list"></div>
+            </fieldset>
+            <fieldset class="munis">
+              <legend>Municipalities <button type="button" class="link" id="munis-all">all</button> · <button type="button" class="link" id="munis-none">none</button></legend>
+              <div id="muni-list" class="muni-list"></div>
+            </fieldset>
+          </div>
+        </details>
+      </form>
+
+      <details class="panel">
+        <summary>Tax profile &amp; weights</summary>
+        <form id="settings" class="grid" autocomplete="off">
+          <label>Filing
+            <select name="filing">
+              <option value="single">single</option>
+              <option value="married">married</option>
+            </select>
+          </label>
+          <label>Taxable income (CHF/yr) <input type="number" name="taxable_income" min="0" step="1000" inputmode="numeric"></label>
+          <label>Taxable wealth (CHF) <input type="number" name="taxable_wealth" min="0" step="10000" inputmode="numeric"></label>
+          <label>Reference municipality <select name="reference_bfs"></select></label>
+          <p class="hint wide" id="tax-note"></p>
+          <label class="slider">Value <input type="range" name="w_value" min="0" max="1" step="0.05"><output></output></label>
+          <label class="slider">Tax <input type="range" name="w_tax" min="0" max="1" step="0.05"><output></output></label>
+          <label class="slider">Price drop <input type="range" name="w_price_drop" min="0" max="1" step="0.05"><output></output></label>
+          <label class="slider">Market time <input type="range" name="w_market_time" min="0" max="1" step="0.05"><output></output></label>
+          <div class="wide row">
+            <button type="button" id="reset-settings">Reset to defaults</button>
+            <button type="button" id="share">Copy share link</button>
+          </div>
+        </form>
+      </details>
+
+      <details class="panel" id="market-panel" hidden>
+        <summary>Market stats</summary>
+        <div id="market" class="market"></div>
+      </details>
+      </div>
+
+      <div class="table-head">
+        <span id="count" aria-live="polite"></span>
+        <span class="hint" id="deal-note">Deal = effective rent (rent + your tax Δ) vs model fair rent</span>
+      </div>
+      <div class="table-wrap" id="table-wrap">
+        <table id="table">
+          <caption class="sr-only">Listings; click a row to show it on the map</caption>
+          <thead><tr id="thead-row"></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <button type="button" id="more" class="more" hidden>Show more</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

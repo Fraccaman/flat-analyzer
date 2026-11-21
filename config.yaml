@@ -1,0 +1,83 @@
+# flat-price configuration
+
+db_path: data/flatprice.db
+dist_dir: dist
+
+# Searches to run on every scrape. Structured filters are translated by the
+# portal adapter; set `url` to bypass them with a raw portal search URL.
+searches:
+  - label: lugano
+    portal: homegate
+    locations: [lugano]
+  - label: paradiso
+    portal: homegate
+    locations: [paradiso]
+  - label: massagno
+    portal: homegate
+    locations: [massagno]
+  - label: sorengo
+    portal: homegate
+    locations: [sorengo]
+  - label: bioggio
+    portal: homegate
+    locations: [bioggio]
+  - label: porza
+    portal: homegate
+    locations: [porza]
+
+  # Flatfox (plain HTTP, no browser). `locations` are municipality names: the
+  # whole municipality polygon is searched, so Lugano includes Pregassona,
+  # Viganello, Breganzona, ... Ads syndicated from homegate are collapsed with
+  # their homegate copy at analysis time (flatprice/dedup.py).
+  - label: flatfox-lugano
+    portal: flatfox
+    locations: [lugano]
+  - label: flatfox-paradiso
+    portal: flatfox
+    locations: [paradiso]
+  - label: flatfox-massagno
+    portal: flatfox
+    locations: [massagno]
+  - label: flatfox-sorengo
+    portal: flatfox
+    locations: [sorengo]
+  - label: flatfox-bioggio
+    portal: flatfox
+    locations: [bioggio]
+  - label: flatfox-porza
+    portal: flatfox
+    locations: [porza]
+
+scrape:
+  delay_seconds: [2.0, 4.0]   # random sleep between page loads
+  headless: false             # DataDome blocks headless Chrome
+  max_pages_per_search: 50
+
+# Default tax profile used for precomputed scores. The website lets each
+# viewer override it client-side.
+tax_profile:
+  canton: TI
+  filing: single              # single | married
+  taxable_income: 120000      # CHF/yr, after deductions
+  taxable_wealth: 200000      # CHF, net
+  reference_bfs: 5192         # Lugano: tax deltas are relative to this municipality
+
+# Score = weighted mix of component percentiles (0..100). Tweakable in the UI.
+scoring:
+  weights:
+    value: 0.55               # rent vs hedonic fair rent
+    tax: 0.25                 # monthly tax saving vs reference municipality
+    price_drop: 0.10          # rent reduced since first seen
+    market_time: 0.10         # long time on market -> negotiable
+  min_listings_for_model: 30
+
+# Data-quality rules (flatprice/quality.py). Homegate's anti-bot system has been
+# seen serving perturbed data to suspected bots: rent x1.366, one more room,
+# bigger m2. Such observations are flagged and ignored for current values.
+quality:
+  poison_ratios: [1.366]      # rent factors to flag (and their inverse)
+  ratio_tolerance: 0.006
+  trusted_portals: [flatfox]  # reference source for cross-portal checks
+  xportal_rent_tolerance: 0.03
+  xportal_max_days: 3
+  max_flagged_share: 0.30     # above this a run is "poisoned": listing fields are not updated, scrape exits 2

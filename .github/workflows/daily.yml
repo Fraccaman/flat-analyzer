@@ -1,0 +1,140 @@
+name: daily
+
+on:
+  schedule:
+    - cron: "0 5 * * *"   # 05:00 UTC every day
+  workflow_dispatch:
+    inputs:
+      skip_scrape:
+        description: "Only rebuild and deploy the site from the existing database (no scraping)"
+        type: boolean
+        default: false
+
+# Least privilege by default; each job asks for what it needs.
+permissions:
+  contents: read
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  scrape-and-build:
+    # Set repo variable RUNNER to e.g. "self-hosted" if GitHub-hosted IPs get blocked.
+    runs-on: ${{ vars.RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 90
+    permissions:
+      contents: write   # push the database to the `data` branch
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check whether the data branch exists
+        id: databranch
+        run: |
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No 'data' branch yet; starting with an empty database."
+          fi
+
+      - name: Check out data branch
+        if: steps.databranch.outputs.exists == 'true'
+        uses: actions/checkout@v5
+        with:
+          ref: data
+          path: data-branch
+
+      - name: Restore database
+        if: steps.databranch.outputs.exists == 'true'
+        run: |
+          mkdir -p data
+          if [ -f data-branch/flatprice.db ]; then cp data-branch/flatprice.db data/flatprice.db; fi
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        env:
+          SKIP_SCRAPE: ${{ inputs.skip_scrape || false }}
+        run: |
+          uv sync --frozen --no-dev
+          # Building the site needs no browser.
+          if [ "$SKIP_SCRAPE" = "true" ]; then exit 0; fi
+          # On a self-hosted runner Chrome is usually already installed, and
+          # installing it again needs sudo.
+          if ! command -v google-chrome >/dev/null && ! command -v google-chrome-stable >/dev/null \
+             && [ ! -d "/Applications/Google Chrome.app" ]; then
+            if [ "$RUNNER_OS" = "Linux" ]; then
+              uv run playwright install --with-deps chrome
+            else
+              uv run playwright install chrome
+            fi
+          fi
+
+      - name: Analyze, build (no scrape)
+        if: inputs.skip_scrape
+        run: uv run flatprice build
+
+      - name: Scrape, analyze, build
+        if: ${{ !inputs.skip_scrape }}
+        env:
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+        run: |
+          # Headful Chrome needs a display; use a virtual one if none is available.
+          if [ "$RUNNER_OS" = "Linux" ] && [ -z "${DISPLAY:-}" ]; then
+            xvfb-run -a uv run flatprice run
+          else
+            uv run flatprice run
+          fi
+
+      - name: Upload debug captures
+        if: ${{ always() && !inputs.skip_scrape }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: debug
+          path: data/debug/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Commit database to data branch
+        if: ${{ !inputs.skip_scrape }}
+        env:
+          DATA_BRANCH_EXISTS: ${{ steps.databranch.outputs.exists }}
+        run: |
+          if [ "$DATA_BRANCH_EXISTS" != "true" ]; then
+            # First run: create the orphan branch as a worktree of the main
+            # checkout so it inherits the push credentials.
+            rm -rf data-branch
+            git worktree add --orphan -b data data-branch
+          fi
+          cd data-branch
+          cp ../data/flatprice.db flatprice.db
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add flatprice.db
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+          git commit -q -m "data: $(date -u +%Y-%m-%d)"
+          git push origin HEAD:data
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: scrape-and-build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

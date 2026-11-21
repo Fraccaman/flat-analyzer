@@ -1,0 +1,49 @@
+{
+  "year": 2026,
+  "sources": [
+    "https://swisstaxcalculator.estv.admin.ch/ (ESTV, API_exportManyTaxScales, TaxYear 2026)",
+    "https://www.estv.admin.ch/estv/de/home/direkte-bundessteuer/dbst-steuertarife.html",
+    "https://swisstaxcalculator.estv.admin.ch/ (ESTV, API_calculateSimpleTaxes, used to validate)"
+  ],
+  "notes": "Federal direct tax (DBG art. 36). Official tariff published as base amount at threshold + rate per 100 CHF above; expressed as marginal tranches [threshold, rate] that reproduce the official amount at every threshold (within rounding). Married tariff (art. 36 al. 2) is also applied to single parents (child deduction from tax not modelled). flat_top: if taxable income >= threshold, tax = income * rate (replaces the brackets).",
+  "income": {
+    "single": [
+      [0, 0.0],
+      [15200, 0.0077],
+      [33200, 0.0088],
+      [43500, 0.0264],
+      [58000, 0.0297],
+      [76200, 0.0594],
+      [82100, 0.066],
+      [108900, 0.088],
+      [141500, 0.11],
+      [185100, 0.132]
+    ],
+    "married": [
+      [0, 0.0],
+      [29700, 0.01],
+      [53400, 0.02],
+      [61300, 0.03],
+      [79100, 0.04],
+      [94900, 0.05],
+      [108700, 0.06],
+      [120600, 0.07],
+      [130500, 0.08],
+      [138400, 0.09],
+      [144300, 0.1],
+      [148300, 0.11],
+      [150400, 0.12],
+      [152400, 0.13]
+    ]
+  },
+  "flat_top": {
+    "single": {
+      "threshold": 794000,
+      "rate": 0.115
+    },
+    "married": {
+      "threshold": 941400,
+      "rate": 0.115
+    }
+  }
+}

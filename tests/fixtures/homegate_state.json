@@ -1,0 +1,342 @@
+{
+  "resultList": {
+    "search": {
+      "fullSearch": {
+        "result": {
+          "pageCount": 4,
+          "resultCount": 70,
+          "listings": [
+            {
+              "listingType": {
+                "type": "PREMIUM"
+              },
+              "id": "4003287711",
+              "listing": {
+                "address": {
+                  "geoCoordinates": {
+                    "accuracy": "HIGH",
+                    "latitude": 45.990942130558,
+                    "longitude": 8.949881971791
+                  },
+                  "geoTags": [
+                    "geo-region-lugano",
+                    "geo-city-paradiso",
+                    "geo-canton-ticino",
+                    "geo-country-switzerland",
+                    "geo-zipcode-6900"
+                  ],
+                  "locality": "Paradiso",
+                  "postalCode": "6900",
+                  "street": "Riva Paradiso 3",
+                  "region": "TI"
+                },
+                "categories": [
+                  "APARTMENT",
+                  "FLAT"
+                ],
+                "characteristics": {
+                  "isNewBuilding": true,
+                  "floor": 5,
+                  "isWheelchairAccessible": true,
+                  "hasDishwasher": true,
+                  "isMinergieGeneral": true,
+                  "livingSpace": 57,
+                  "hasBalcony": true,
+                  "totalFloorSpace": 11,
+                  "hasNiceView": true,
+                  "hasWashingMachine": true,
+                  "hasGarage": true,
+                  "hasCableTv": true,
+                  "hasSwimmingPool": true,
+                  "hasElevator": true,
+                  "isMinergieCertified": true,
+                  "isQuiet": true,
+                  "yearBuilt": 2024,
+                  "numberOfRooms": 2.5,
+                  "arePetsAllowed": true,
+                  "numberOfBathrooms": 1,
+                  "hasParking": true
+                },
+                "id": "4003287711",
+                "localization": {
+                  "en": {
+                    "attachments": [],
+                    "text": {
+                      "title": "Bright 2.5-room apartment with lake view in Paradiso",
+                      "description": "Welcome to this beautiful, newly built apartment (2024) on the 5th floor, in one of the most sought-after locations in Ticino, in Paradiso, overlooking the magnificent Lake Lugano. The property is ava"
+                    },
+                    "isMachineTranslated": true
+                  },
+                  "de": {
+                    "isMachineTranslated": true,
+                    "attachments": [],
+                    "text": {
+                      "description": "Willkommen in dieser wunderschönen, neu gebauten Wohnung (2024) im 5. Stock, in einer der begehrtesten Lagen des Tessins, in Paradiso, mit Blick auf den wunderschönen Luganersee. Die Immobilie ist sof",
+                      "title": "Helles 2.5-Zimmer-Apartment mit Seeblick in Paradiso"
+                    }
+                  },
+                  "fr": {
+                    "attachments": [],
+                    "text": {
+                      "title": "Appartement lumineux de 2,5 pièces avec vue sur le lac à Paradiso",
+                      "description": "Bienvenue dans cet appartement splendide, de nouvelle construction (2024), au 5ème étage, dans l'une des positions les plus convoitées du Tessin, à Paradiso, avec vue sur le magnifique lac de Lugano. "
+                    },
+                    "isMachineTranslated": true
+                  },
+                  "primary": "it",
+                  "it": {
+                    "attachments": [
+                      {
+                        "metadata": {
+                          "contentType": "image/jpeg",
+                          "checksum": {
+                            "value": "663a44db5a8b4c0c4b9233a487b9edfddc3d60a1db9aef7e7517e6cdd7ca0306",
+                            "algorithm": "SHA256"
+                          },
+                          "image": {
+                            "width": 1500,
+                            "height": 999
+                          },
+                          "byteSize": 162913
+                        },
+                        "type": "IMAGE",
+                        "url": "https://media2.homegate.ch/listings/v2/n052/4003287711/image/521d679a463c251a3527f7c834d03079.jpg",
+                        "file": "fcb731821e.jpg",
+                        "alt": null
+                      },
+                      {
+                        "type": "IMAGE",
+                        "alt": null,
+                        "url": "https://media2.homegate.ch/listings/v2/n052/4003287711/image/e8eb4d178af34c481530315227c9a450.jpg",
+                        "file": "5492daa9e0.jpg",
+                        "metadata": {
+                          "checksum": {
+                            "algorithm": "SHA256",
+                            "value": "0bb88c463614c1685a83a125d022028151b3b78ceeccbd470050122ce98e1c33"
+                          },
+                          "image": {
+                            "width": 1500,
+                            "height": 1000
+                          },
+                          "contentType": "image/jpeg",
+                          "byteSize": 134102
+                        }
+                      }
+                    ],
+                    "isMachineTranslated": false,
+                    "urls": [
+                      {
+                        "type": "LINK",
+                        "value": "https://www.tertianum.ch/residenza-du-lac"
+                      }
+                    ],
+                    "text": {
+                      "description": "Benvenuti in questo splendido appartamento di nuova costruzione (2024), situato al 5° piano in una delle posizioni più ambite del Ticino, a Paradiso, affacciato sul meraviglioso Lago di Lugano. L'immo",
+                      "title": "Luminoso appartamento di 2.5 locali con vista lago a Paradiso"
+                    }
+                  }
+                },
+                "meta": {
+                  "createdAt": "2026-07-03T12:51:27.255Z"
+                },
+                "offerType": "RENT",
+                "platforms": [
+                  "homegate",
+                  "immoscout24",
+                  "alleimmobilien",
+                  "home",
+                  "immostreet"
+                ],
+                "prices": {
+                  "currency": "CHF",
+                  "rent": {
+                    "interval": "MONTH"
+                  },
+                  "buy": {}
+                }
+              },
+              "listingCard": {
+                "size": "S"
+              },
+              "listingScores": {
+                "listingCompletenessScore": 8,
+                "packageScore": 4
+              },
+              "newConstructionData": {
+                "projectUrl": "https://www.tertianum.ch/residenza-du-lac",
+                "projectType": "NEW_CONSTRUCTION_LIGHT"
+              },
+              "listerBranding": {
+                "logoUrl": "https://media2.homegate.ch/t_customer_logo/logos/l_n052_v1.png",
+                "isQualityPartner": false,
+                "subscriptionType": "Starter",
+                "isPremiumBranding": false,
+                "basePackage": "RE_STARTER"
+              }
+            },
+            {
+              "listingType": {
+                "type": "TOP"
+              },
+              "id": "4003479762",
+              "listing": {
+                "address": {
+                  "geoCoordinates": {
+                    "accuracy": "HIGH",
+                    "latitude": 45.990562133551,
+                    "longitude": 8.948331971797
+                  },
+                  "geoTags": [
+                    "geo-region-lugano",
+                    "geo-city-paradiso",
+                    "geo-canton-ticino",
+                    "geo-country-switzerland",
+                    "geo-zipcode-6900"
+                  ],
+                  "locality": "Paradiso",
+                  "postalCode": "6900",
+                  "street": "Via Ernesto Bosia 5E",
+                  "region": "TI"
+                },
+                "categories": [
+                  "APARTMENT",
+                  "FLAT"
+                ],
+                "characteristics": {
+                  "numberOfRooms": 2.5,
+                  "hasParking": true,
+                  "livingSpace": 60,
+                  "hasGarage": true,
+                  "floor": 1,
+                  "yearBuilt": 2019,
+                  "hasWashingMachine": true,
+                  "isNewBuilding": true,
+                  "isQuiet": true,
+                  "isChildFriendly": true,
+                  "hasBalcony": true,
+                  "isWheelchairAccessible": true,
+                  "hasElevator": true
+                },
+                "id": "4003479762",
+                "localization": {
+                  "de": {
+                    "isMachineTranslated": true,
+                    "text": {
+                      "description": "Verfügbar ab sofort, elegantes 2.5-Zimmer-Apartment in Paradiso, in einer prestigeträchtigen Residenz im Grünen.Das Apartment bietet eine optimale Südausrichtung, die für helle und sonnige Räume währe",
+                      "title": "Prestigioso 2.5 Zimmer in Paradiso | sofort verfügbar"
+                    },
+                    "attachments": []
+                  },
+                  "fr": {
+                    "attachments": [],
+                    "isMachineTranslated": true,
+                    "text": {
+                      "description": "Disponible immédiatement, élégant appartement de 2.5 pièces à Paradiso, au sein d'une résidence prestigieuse immergée dans le verdure.L'appartement bénéficie d'une excellente exposition sud, qui garan",
+                      "title": "Prestigieux 2.5 pièces à Paradiso | disponible immédiatement"
+                    }
+                  },
+                  "it": {
+                    "text": {
+                      "description": "Disponibile da subito, elegante appartamento di 2.5 locali semi arredato a Paradiso, all'interno di una prestigiosa residenza immersa nel verde.L'appartamento gode di un'ottima esposizione a sud, che ",
+                      "title": "Prestigioso 2.5 locali a Paradiso | disponibile da subito"
+                    },
+                    "attachments": [
+                      {
+                        "type": "IMAGE",
+                        "url": "https://media2.homegate.ch/listings/v2/hgonif/4003479762/image/c5eef3638a214b2831e193c8380b5326.jpg",
+                        "attachmentAnnotation": {
+                          "image": {
+                            "classification": "Building"
+                          }
+                        },
+                        "file": "3f5973e738.jpg",
+                        "alt": "Modern multi-story residential building with balconies and large windows, surrounded by landscaped garden area with pathways and greenery.",
+                        "metadata": {
+                          "contentType": "image/jpeg",
+                          "byteSize": 389168,
+                          "checksum": {
+                            "algorithm": "SHA256",
+                            "value": "2ebbf494d1ebc43ef54e59312a77e6235b9f59b4f70f294c5d83a70f4b05032b"
+                          },
+                          "image": {
+                            "height": 1000,
+                            "width": 1500
+                          }
+                        }
+                      },
+                      {
+                        "url": "https://media2.homegate.ch/listings/v2/hgonif/4003479762/image/b1026d9bbe265f8c5a78874232ff10ff.jpg",
+                        "alt": "Floor plan of a multi-level building with labeled rooms and areas including living room, kitchen, bedroom, bathroom, and entrance/disposal area. Includes dimensions and floor levels.",
+                        "metadata": {
+                          "byteSize": 184153,
+                          "contentType": "image/jpeg",
+                          "checksum": {
+                            "algorithm": "SHA256",
+                            "value": "abd9c8f71a5c9403c1ddeb4d171518cd44d40302ca6ab2437f3744c48bb4218f"
+                          },
+                          "image": {
+                            "height": 1656,
+                            "width": 1500
+                          }
+                        },
+                        "attachmentAnnotation": {
+                          "image": {
+                            "floorPlan": {
+                              "confidence": "low"
+                            },
+                            "classification": "Floor Plan"
+                          }
+                        },
+                        "file": "c220f3d387.jpg",
+                        "type": "IMAGE"
+                      }
+                    ],
+                    "isMachineTranslated": false
+                  },
+                  "en": {
+                    "isMachineTranslated": true,
+                    "attachments": [],
+                    "text": {
+                      "description": "Available immediately, elegant 2.5-room apartment in Paradiso, within a prestigious residence surrounded by greenery.The apartment enjoys excellent southern exposure, guaranteeing bright and sunny spa",
+                      "title": "Prestigious 2.5 rooms in Paradiso | available immediately"
+                    }
+                  },
+                  "primary": "it"
+                },
+                "meta": {
+                  "createdAt": "2026-09-17T13:39:54.259Z"
+                },
+                "offerType": "RENT",
+                "platforms": [
+                  "homegate",
+                  "alleimmobilien",
+                  "home",
+                  "immostreet"
+                ],
+                "prices": {
+                  "buy": {},
+                  "rent": {
+                    "interval": "MONTH",
+                    "gross": 2300
+                  },
+                  "currency": "CHF"
+                },
+                "valueAddedServices": {}
+              },
+              "listingCard": {
+                "size": "M"
+              },
+              "listingScores": {
+                "listingCompletenessScore": 13,
+                "packageScore": 11
+              },
+              "listerBranding": {
+                "isQualityPartner": false
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
